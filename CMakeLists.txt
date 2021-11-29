@@ -15,7 +15,7 @@ set(Headers
 
 set(Sources
         2015/src/day1/apartment_floors.cpp
-        )
+        2015/inc/day2/gift_wrap_dim.h 2015/src/day2/gift_wrap_dim.cpp 2015/inc/day2/wrapping_order.h 2015/src/day2/wrapping_order.cpp 2015/inc/day2/gift_ribbon_wrap.h 2015/src/day2/gift_ribbon_wrap.cpp 2015/inc/day2/wrapping_order_ribbon.h 2015/src/day2/wrapping_order_ribbon.cpp)
 
 set(TestDirs 2015/test)
 
