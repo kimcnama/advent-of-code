@@ -48,4 +48,6 @@ TEST(GridTraverser, InputTest) {
 
     traversal.ProcessInstructions(str_inputInstructions);
     std::cout << std::endl << "Number houses received presents: " << traversal.GetNumHousesRecPresents() << std::endl;
+
+    ASSERT_TRUE(traversal.GetNumHousesRecPresents() == 2081);
 }

@@ -18,11 +18,11 @@ public:
     void ProcessInstructions(const std::string& str_instructions);
     uint32_t GetNumHousesRecPresents();
     uint32_t GetNumPresentsDelivered();
+    void UpdateInternalFromInstruction(int32_t i32_x, int32_t i32_y);
     ~GridTraverser();
 
 protected:
     static std::string GetKeyString(int32_t i32_x, int32_t i32_y);
-    void UpdateInternalFromInstruction(int32_t i32_x, int32_t i32_y);
 
     int32_t i32_startX_;
     int32_t i32_startY_;
