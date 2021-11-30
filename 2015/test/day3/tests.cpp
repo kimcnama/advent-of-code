@@ -73,3 +73,25 @@ TEST(ElfManager, SanityTests) {
     elfManager.ProcessListInstructions("^v^v^v^v^v");
     ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 11);
 }
+
+TEST(ElfManager, InputTest) {
+    std::string str_inputInstructions;
+    std::ifstream file("../../../2015/test/day3/test_data.in.txt");
+    std::string str_line;
+
+    while (getline(file, str_line)) {
+        if (str_inputInstructions.empty()) {
+            str_inputInstructions = str_line;
+        } else {
+            str_inputInstructions += str_line;
+        }
+    }
+
+    auto elfManager = ElfManager();
+    ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 0);
+
+    elfManager.ProcessListInstructions(str_inputInstructions);
+    std::cout << std::endl << "Number houses received presents: " << elfManager.GetNumHousesRecPresents() << std::endl;
+
+    ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 2341);
+}
