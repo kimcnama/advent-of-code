@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <fstream>
 #include "../../inc/day3/grid_traverser.h"
+#include "../../inc/day3/elf_manager.h"
 
 TEST(GridTraverser, SanityTests) {
     auto traversal = GridTraverser();
@@ -50,4 +51,25 @@ TEST(GridTraverser, InputTest) {
     std::cout << std::endl << "Number houses received presents: " << traversal.GetNumHousesRecPresents() << std::endl;
 
     ASSERT_TRUE(traversal.GetNumHousesRecPresents() == 2081);
+}
+
+TEST(ElfManager, SanityTests) {
+    auto elfManager = ElfManager();
+    ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 0);
+    elfManager.ProcessListInstructions("");
+    ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 1);
+
+    elfManager.ResetState();
+    ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 0);
+
+    elfManager.ProcessListInstructions("^v");
+    ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 3);
+
+    elfManager.ResetState();
+    elfManager.ProcessListInstructions("^>v<");
+    ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 3);
+
+    elfManager.ResetState();
+    elfManager.ProcessListInstructions("^v^v^v^v^v");
+    ASSERT_TRUE(elfManager.GetNumHousesRecPresents() == 11);
 }
