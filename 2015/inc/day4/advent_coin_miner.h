@@ -16,8 +16,7 @@ class AdventCoinMiner {
  public:
   AdventCoinMiner(const char* pch_key, uint8_t u8_nBytesKey);
   ~AdventCoinMiner();
-  void Mine(const char* pch_key, uint8_t u8_nBytes);
-  uint8_t GetSolutionNBytes();
+  void Mine(uint8_t u8_nLeading0s);
   char* GetSolution();
   char* GetMessage();
   void IncrementNonce();
@@ -25,8 +24,12 @@ class AdventCoinMiner {
  protected:
   char* _pch_message;
   char* _pch_solution;
+  char* _pch_digest;
   uint8_t _u8_nBytesKey;
-  uint8_t _u8_nBytesSolution;
+  bool _b_exhaustedSearch;
+  uint32_t _u32_nonce;
+  char* _pch_nonce;
+  uint8_t _u8_nonceLen;
 };
 
 #endif //ADVENTOFCODE_2015_INC_DAY4_ADVENT_COIN_MINER_H_

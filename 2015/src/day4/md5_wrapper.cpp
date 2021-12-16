@@ -34,5 +34,6 @@ bool AdventMiner(const char* pch_message, uint8_t u8_nBytes) {
     if (digest[i] != '0') {
       return false;
     }
-  } return true;
+  }
+  return true;
 }

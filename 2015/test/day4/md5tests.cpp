@@ -23,12 +23,18 @@ TEST(MD5Tests, SanityTests) {
   MD5Wrapper(message1, digest1);
   char expected1[] = "000006136EF";
   AssertEqual(digest1, expected1, 11);
+
+  const char example2[16] = {'a', 'b', 'c', 'd', 'e', 'f', '6', '0', '9', '0', '4', '3', '\0', 'a', 'b', 'c'};
+  char digest2[16];
+  MD5Wrapper(example2, digest2);
+  AssertEqual(digest, expected, 11);
 }
 
 TEST(AdventMinerTests, SanityTests) {
   const char* example1 = "abcdef609043";
   const char* example2 = "pqrstuv1048970";
   const char* example3 = "pqrstuv1048971";
+
   ASSERT_TRUE(AdventMiner(example1, 5));
   ASSERT_TRUE(AdventMiner(example2, 5));
   ASSERT_FALSE(AdventMiner(example3, 5));

@@ -7,19 +7,25 @@
 
 AdventCoinMiner::AdventCoinMiner(const char *pch_key, uint8_t nBytesKey) {
   _u8_nBytesKey = nBytesKey;
-  _pch_solution = new char[NBYTES_MD5];;
+  _u32_nonce = 0;
+  _u8_nonceLen = NBYTES_MD5 - _u8_nBytesKey;
+  _pch_nonce = new char[_u8_nonceLen];
+
+  _pch_solution = new char[NBYTES_MD5];
   _pch_message = new char[NBYTES_MD5];
-  _u8_nBytesSolution = 0;
+  _pch_digest = new char[NBYTES_MD5];
+  _b_exhaustedSearch = false;
 
-  for(uint8_t i = 0; i < NBYTES_MD5; ++i) {
-    _pch_solution[i] = '0';
-
-    if (i < _u8_nBytesKey) {
-      _pch_message[i] = pch_key[i];
-    } else {
-      _pch_message[i] = '0';
-    }
+  for (uint8_t i = 0; i < nBytesKey && i < NBYTES_MD5; ++i) {
+    _pch_message[i] = pch_key[i];
   }
+
+  if (nBytesKey < NBYTES_MD5) {
+    _pch_message[_u8_nBytesKey] = '\0';
+  }
+
+  _pch_solution[0] = '\0';
+  _pch_digest[0] = '\0';
 }
 
 char *AdventCoinMiner::GetSolution() {
@@ -30,34 +36,44 @@ char* AdventCoinMiner::GetMessage() {
   return _pch_message;
 }
 
-uint8_t AdventCoinMiner::GetSolutionNBytes() {
-  return _u8_nBytesSolution;
-}
-
 AdventCoinMiner::~AdventCoinMiner() {
   free(_pch_message);
   free(_pch_solution);
+  free(_pch_digest);
 }
 
-void AdventCoinMiner::Mine(const char* pch_key, uint8_t u8_nBytes) {
+void AdventCoinMiner::Mine(uint8_t u8_nLeading0s) {
+
+  bool b_solFound = false;
+  _b_exhaustedSearch = false;
+
+  do {
+
+    b_solFound = AdventMiner(_pch_message, u8_nLeading0s);
+
+    if (b_solFound) {
+      for(uint8_t i = 0; i < NBYTES_MD5; ++i) {
+        _pch_solution[i] = _pch_message[i];
+      }
+    } else {
+      this->IncrementNonce();
+    }
+
+  } while (!b_solFound && !_b_exhaustedSearch);
 
 }
 
 void AdventCoinMiner::IncrementNonce() {
 
-  bool b_incremented = false;
-  uint8_t u8_i = _u8_nBytesKey;
+  ++_u32_nonce;
+  std::string str_nonceString = std::to_string(_u32_nonce);
 
-  while (!b_incremented && u8_i < NBYTES_MD5) {
+  for (uint8_t u8_i = 0; u8_i < NBYTES_MD5 - _u8_nBytesKey && u8_i < str_nonceString.size(); ++u8_i) {
+    _pch_message[_u8_nBytesKey + u8_i] = str_nonceString.at(u8_i);
+  }
 
-    if (_pch_message[u8_i] == DEC_VAL_9) {
-      _pch_message[u8_i] = DEC_VAL_0;
-    } else {
-      ++_pch_message[u8_i];
-      b_incremented = true;
-    }
-
-    ++u8_i;
+  if (_u8_nBytesKey + str_nonceString.size() < NBYTES_MD5) {
+    _pch_message[_u8_nBytesKey + str_nonceString.size()] = '\0';
   }
 }
 
