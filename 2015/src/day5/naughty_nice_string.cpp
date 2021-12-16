@@ -20,7 +20,7 @@ NaughtNiceStrings::NaughtNiceStrings() {
 }
 
 NaughtNiceStrings::~NaughtNiceStrings() {
-
+  free(_pch_vowels);
 }
 bool NaughtNiceStrings::ContainsDoubleLetter() {
   for (uint8_t u8_i = 1; u8_i < _str_testString.size(); ++u8_i) {
