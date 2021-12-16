@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.8)
 
 set(This ExampleTests)
 
-set(Sources day1/tests.cpp day2/tests.cpp day3/tests.cpp day4/md5tests.cpp)
+set(Sources day1/tests.cpp day2/tests.cpp day3/tests.cpp day4/md5tests.cpp day4/miner_logic.cpp)
 
 add_executable(${This} ${Sources})
 

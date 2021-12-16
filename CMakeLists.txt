@@ -14,11 +14,11 @@ set(Headers
         2015/inc/day4/md5_wrapper.h
         2015/inc/day2/wrapping_order.h
         2015/inc/day2/gift_wrap_dim.h
-        )
+        2015/inc/day4/advent_coin_miner.h)
 
 set(Sources
         2015/src/day1/apartment_floors.cpp
-        2015/src/day2/gift_wrap_dim.cpp 2015/src/day2/wrapping_order.cpp 2015/inc/day2/gift_ribbon_wrap.h 2015/src/day2/gift_ribbon_wrap.cpp 2015/inc/day2/wrapping_order_ribbon.h 2015/src/day2/wrapping_order_ribbon.cpp 2015/inc/day3/grid_traverser.h 2015/src/day3/grid_traverser.cpp 2015/inc/day3/grid_traverser_sub.h 2015/src/day3/grid_traverser_sub.cpp 2015/inc/day3/elf_manager.h 2015/src/day3/elf_manager.cpp 2015/src/day4/md5_wrapper.cpp)
+        2015/src/day2/gift_wrap_dim.cpp 2015/src/day2/wrapping_order.cpp 2015/inc/day2/gift_ribbon_wrap.h 2015/src/day2/gift_ribbon_wrap.cpp 2015/inc/day2/wrapping_order_ribbon.h 2015/src/day2/wrapping_order_ribbon.cpp 2015/inc/day3/grid_traverser.h 2015/src/day3/grid_traverser.cpp 2015/inc/day3/grid_traverser_sub.h 2015/src/day3/grid_traverser_sub.cpp 2015/inc/day3/elf_manager.h 2015/src/day3/elf_manager.cpp 2015/src/day4/md5_wrapper.cpp 2015/src/day4/advent_coint_miner.cpp)
 
 set(TestDirs 2015/test)
 
