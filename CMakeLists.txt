@@ -22,7 +22,7 @@ set(Headers
         2015/inc/day3/grid_traverser.h
         2015/inc/day3/grid_traverser_sub.h
         2015/inc/day3/elf_manager.h
-        )
+        2015/inc/day6/light_grid.h)
 
 set(Sources
         2015/src/day1/apartment_floors.cpp
@@ -37,7 +37,7 @@ set(Sources
         2015/src/day4/advent_coint_miner.cpp
         2015/src/day5/naughty_nice_string.cpp
         2015/src/day5/naughty_nice_string_part2.cpp
-        )
+        2015/src/day6/light_grid.cpp)
 
 set(TestDirs 2015/test)
 
