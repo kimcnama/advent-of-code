@@ -30,6 +30,10 @@ TEST(ContainsDuo, Sanity) {
 
   cls.SetString("uurcxstgmygtbstg");
   ASSERT_TRUE(cls.ContainsDuo());
+
+  // Fix this test case
+  cls.SetString("btamaihdivrhhrrv");
+  ASSERT_FALSE(cls.ContainsDuo());
 }
 
 TEST(RecurringCharDuo, Sanity) {
@@ -71,6 +75,11 @@ TEST(IsNiceTests, Sanity) {
   cls.SetString("ieodomkazucvgmuy");
   ASSERT_FALSE(cls.IsNiceString());
 
+  cls.SetString("skerkykytazvbupg");
+  ASSERT_TRUE(cls.IsNiceString());
+
+  cls.SetString("btamaihdivrhhrrv");
+  ASSERT_FALSE(cls.IsNiceString());
 }
 
 TEST(Part2Test, KnownInut) {
@@ -84,17 +93,18 @@ TEST(Part2Test, KnownInut) {
   uint16_t u16_niceStrCount = 0;
   uint16_t u16_lines = 0;
 
+  bool found = false;
   while (getline(file, str_line)) {
+
     cls.SetString(str_line);
+
     if (cls.IsNiceString()) {
       ++u16_niceStrCount;
-    } else {
-      cls.IsNiceString();
     }
     ++u16_lines;
   }
   std::cout << "Number of nice strings: " << u16_niceStrCount << std::endl;
   std::cout << "Number of lines: " << u16_lines << std::endl;
 
-  ASSERT_TRUE(u16_niceStrCount == 258);
+  ASSERT_TRUE(u16_niceStrCount == 53);
 }
