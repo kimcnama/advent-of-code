@@ -21,7 +21,6 @@ set(Headers
         2015/inc/day2/wrapping_order_ribbon.h
         2015/inc/day3/grid_traverser.h
         2015/inc/day3/grid_traverser_sub.h
-        2015/src/day3/grid_traverser_sub.cpp
         2015/inc/day3/elf_manager.h
         )
 
@@ -34,6 +33,7 @@ set(Sources
         2015/src/day3/grid_traverser.cpp
         2015/src/day3/elf_manager.cpp
         2015/src/day4/md5_wrapper.cpp
+        2015/src/day3/grid_traverser_sub.cpp
         2015/src/day4/advent_coint_miner.cpp
         2015/src/day5/naughty_nice_string.cpp
         2015/src/day5/naughty_nice_string_part2.cpp
