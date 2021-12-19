@@ -24,7 +24,7 @@ set(Headers
         2015/inc/day3/elf_manager.h
         2015/inc/day6/light_grid.h
         2015/inc/day6/intensity_light_grid.h
-        )
+        2015/inc/day7/wire.h 2015/inc/day7/wire_manager.h)
 
 set(Sources
         2015/src/day1/apartment_floors.cpp
@@ -41,7 +41,7 @@ set(Sources
         2015/src/day5/naughty_nice_string_part2.cpp
         2015/src/day6/light_grid.cpp
         2015/src/day6/intensity_light_grid.cpp
-        )
+        2015/src/day7/wire.cpp 2015/src/day7/wire_manager.cpp)
 
 set(TestDirs 2015/test)
 
