@@ -21,7 +21,6 @@ TEST(WireManagerTest, SanityTests) {
   cls.Not("i", "y");
 
   cls.PrintWireValues();
-
 }
 
 TEST(WireManagerInstructionParse, SanityTests) {
@@ -62,9 +61,29 @@ TEST(WireManagerTest, KnownInput) {
 
   auto cls = WireManager();
 
+  std::vector<std::string> outstandingIns;
+
+  int d;
   while(getline(file, str_line)) {
-    cls.ExeInstructionLine(str_line);
+    if (!cls.ExeInstructionLine(str_line)) {
+      outstandingIns.push_back(str_line);
+    }
+  }
+
+  uint16_t u16_i = 0;
+  while(outstandingIns.size() > 0) {
+    str_line = outstandingIns.at(u16_i);
+
+    if (cls.ExeInstructionLine(str_line)) {
+      outstandingIns.erase(outstandingIns.begin() + u16_i);
+    }
+
+    ++u16_i;
+    if (u16_i >= outstandingIns.size()) {
+      u16_i = 0;
+    }
   }
 
   cls.PrintWireValues();
+  // Assert a equals 956
 }

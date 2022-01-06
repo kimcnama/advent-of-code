@@ -15,6 +15,11 @@ void WireManager::PrintWireValues() {
     std::cout << str_wireName << ": " << p_wire->GetSignalVal() << std::endl;
   }
 }
+
+bool IsNumber(const std::string& str) {
+  return str.find_first_not_of("0123456789") == std::string::npos;
+}
+
 void WireManager::SetWire(const std::string& str_wireName, uint16_t u16_val) {
 
   Wire* p_wire;
@@ -109,7 +114,7 @@ void WireManager::RShift(const std::string& str_dest, const std::string& str_w1,
   p_wDest->RShift(p_w1, u16_n);
 }
 
-void WireManager::ExeInstructionLine(std::string &str_instruction) {
+bool WireManager::ExeInstructionLine(std::string &str_instruction) {
 
   std::string AND = " AND ";
   std::string OR = " OR ";
@@ -127,36 +132,112 @@ void WireManager::ExeInstructionLine(std::string &str_instruction) {
 
     w1 = str_equalsRemoved.substr(0, str_equalsRemoved.find(AND));
     w2 = str_equalsRemoved.substr(str_equalsRemoved.find(AND)+ AND.size());
-    this->And(str_dest, w1, w2);
+
+    if (IsNumber(w1) && !this->IsWireInMap(w1)) {
+      this->SetWire(w1, (uint16_t)std::atoi(w1.c_str()));
+    }
+
+    if (IsNumber(w2) && !this->IsWireInMap(w2)) {
+      this->SetWire(w2, (uint16_t)std::atoi(w2.c_str()));
+    }
+
+    if (this->IsWireInMap(w1) && this->IsWireInMap(w2)) {
+      this->And(str_dest, w1, w2);
+    } else {
+      return false;
+    }
 
   } else if (str_equalsRemoved.find(OR) != std::string::npos) {
 
     w1 = str_equalsRemoved.substr(0, str_equalsRemoved.find(OR));
     w2 = str_equalsRemoved.substr(str_equalsRemoved.find(OR) + OR.size());
-    this->Or(str_dest, w1, w2);
+
+    if (IsNumber(w1) && !this->IsWireInMap(w1)) {
+      this->SetWire(w1, (uint16_t)std::atoi(w1.c_str()));
+    }
+
+    if (IsNumber(w2) && !this->IsWireInMap(w2)) {
+      this->SetWire(w2, (uint16_t)std::atoi(w2.c_str()));
+    }
+
+    if (this->IsWireInMap(w1) && this->IsWireInMap(w2)) {
+      this->Or(str_dest, w1, w2);
+    } else {
+      return false;
+    }
 
   } else if (str_equalsRemoved.find(NOT) != std::string::npos) {
 
     w1 = str_equalsRemoved.substr(NOT.size());
-    this->Not(str_dest, w1);
+
+    if (IsNumber(w1) && !this->IsWireInMap(w1)) {
+      this->SetWire(w1, (uint16_t)std::atoi(w1.c_str()));
+    }
+
+    if (this->IsWireInMap(w1)) {
+      this->Not(str_dest, w1);
+    } else {
+      return false;
+    }
 
   } else if (str_equalsRemoved.find(LSHIFT) != std::string::npos) {
 
     w1 = str_equalsRemoved.substr(0, str_equalsRemoved.find(LSHIFT));
     w2 = str_equalsRemoved.substr(str_equalsRemoved.find(LSHIFT) + LSHIFT.size());
-    this->LShift(str_dest, w1, std::atoi(w2.c_str()));
+
+    if (IsNumber(w1) && !this->IsWireInMap(w1)) {
+      this->SetWire(w1, (uint16_t)std::atoi(w1.c_str()));
+    }
+
+    if (IsNumber(w2) && !this->IsWireInMap(w2)) {
+      this->SetWire(w2, (uint16_t)std::atoi(w2.c_str()));
+    }
+
+    if (this->IsWireInMap(w1)) {
+      this->LShift(str_dest, w1, std::atoi(w2.c_str()));
+    } else {
+      return false;
+    }
 
   } else if (str_equalsRemoved.find(RSHIFT) != std::string::npos) {
 
     w1 = str_equalsRemoved.substr(0, str_equalsRemoved.find(RSHIFT));
     w2 = str_equalsRemoved.substr(str_equalsRemoved.find(RSHIFT) + RSHIFT.size());
-    this->RShift(str_dest, w1, (uint16_t)std::atoi(w2.c_str()));
+
+    if (IsNumber(w1) && !this->IsWireInMap(w1)) {
+      this->SetWire(w1, (uint16_t)std::atoi(w1.c_str()));
+    }
+
+    if (IsNumber(w2) && !this->IsWireInMap(w2)) {
+      this->SetWire(w2, (uint16_t)std::atoi(w2.c_str()));
+    }
+
+    if (this->IsWireInMap(w1)) {
+      this->RShift(str_dest, w1, (uint16_t)std::atoi(w2.c_str()));
+    } else {
+      return false;
+    }
 
   } else {
 
-    this->SetWire(str_dest, (uint16_t)std::atoi(str_equalsRemoved.c_str()));
+    if (!IsNumber(str_equalsRemoved)) {
+      if (!this->IsWireInMap(str_equalsRemoved)) {
+        return false;
+      }
+      Wire* w = this->GetWire(str_equalsRemoved);
+      this->SetWire(str_dest, w->GetSignalVal());
+
+    } else {
+      this->SetWire(str_dest, (uint16_t)std::atoi(str_equalsRemoved.c_str()));
+    }
 
   }
+
+  return true;
+}
+
+int WireManager::NElementsMap() {
+  return _map_wires.size();
 }
 
 

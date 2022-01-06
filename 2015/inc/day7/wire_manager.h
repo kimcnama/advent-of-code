@@ -24,7 +24,9 @@ class WireManager {
   void LShift(const std::string& str_dest, const std::string& str_w1, uint16_t u16_n);
   void RShift(const std::string& str_dest, const std::string& str_w1, uint16_t u16_n);
 
-  void ExeInstructionLine(std::string& str_instruction);
+  bool ExeInstructionLine(std::string& str_instruction);
+
+  int NElementsMap();
 
 
  protected:
