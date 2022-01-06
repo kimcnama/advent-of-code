@@ -23,11 +23,8 @@ class WireManager {
   void Not(const std::string& str_dest, const std::string& str_w1);
   void LShift(const std::string& str_dest, const std::string& str_w1, uint16_t u16_n);
   void RShift(const std::string& str_dest, const std::string& str_w1, uint16_t u16_n);
-
   bool ExeInstructionLine(std::string& str_instruction);
-
-  int NElementsMap();
-
+  void ResetWires(uint16_t u16_val);
 
  protected:
   std::map<std::string, Wire*> _map_wires;

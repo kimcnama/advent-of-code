@@ -63,7 +63,6 @@ TEST(WireManagerTest, KnownInput) {
 
   std::vector<std::string> outstandingIns;
 
-  int d;
   while(getline(file, str_line)) {
     if (!cls.ExeInstructionLine(str_line)) {
       outstandingIns.push_back(str_line);
@@ -85,5 +84,53 @@ TEST(WireManagerTest, KnownInput) {
   }
 
   cls.PrintWireValues();
-  // Assert a equals 956
+  Wire* a = cls.GetWire("a");
+  ASSERT_EQ(a->GetSignalVal(), 956);
+}
+
+TEST(WireManagerTest, KnownInputPart2) {
+
+  std::ifstream file("../../../2015/test/day7/test_data.in.txt");
+  std::string str_line;
+
+  auto cls = WireManager();
+
+  std::vector<std::string> outstandingIns, orderedIns;
+
+  cls.SetWire("b", 956);
+
+  while(getline(file, str_line)) {
+    if (!cls.ExeInstructionLine(str_line)) {
+      outstandingIns.push_back(str_line);
+    } else {
+      orderedIns.push_back(str_line);
+    }
+  }
+
+  uint16_t u16_i = 0;
+  while(outstandingIns.size() > 0) {
+    str_line = outstandingIns.at(u16_i);
+
+    if (cls.ExeInstructionLine(str_line)) {
+      outstandingIns.erase(outstandingIns.begin() + u16_i);
+      orderedIns.push_back(str_line);
+    }
+
+    ++u16_i;
+    if (u16_i >= outstandingIns.size()) {
+      u16_i = 0;
+    }
+  }
+
+  cls.PrintWireValues();
+//  cls.ResetWires(0);
+  cls.SetWire("b", 956);
+  cls.PrintWireValues();
+
+  for (auto & str_ins : orderedIns) {
+    cls.ExeInstructionLine(str_ins);
+  }
+
+  cls.PrintWireValues();
+  // 33706 is wrong, too low
 }

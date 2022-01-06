@@ -236,10 +236,11 @@ bool WireManager::ExeInstructionLine(std::string &str_instruction) {
   return true;
 }
 
-int WireManager::NElementsMap() {
-  return _map_wires.size();
+void WireManager::ResetWires(uint16_t u16_val) {
+  for (auto const & [str_wireName, p_wire] : _map_wires) {
+    if (!IsNumber(str_wireName)) {
+      this->SetWire(str_wireName, u16_val);
+    }
+  }
 }
-
-
-
 
