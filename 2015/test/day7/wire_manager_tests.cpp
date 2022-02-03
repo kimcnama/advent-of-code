@@ -90,6 +90,7 @@ TEST(WireManagerTest, KnownInput) {
 
 TEST(WireManagerTest, KnownInputPart2) {
 
+  // Must remove the "-> b" line in input txt file to get answer
   std::ifstream file("../../../2015/test/day7/test_data.in.txt");
   std::string str_line;
 
@@ -132,5 +133,6 @@ TEST(WireManagerTest, KnownInputPart2) {
   }
 
   cls.PrintWireValues();
-  // 33706 is wrong, too low
+  Wire* a = cls.GetWire("a");
+  ASSERT_EQ(a->GetSignalVal(), 40149);
 }
