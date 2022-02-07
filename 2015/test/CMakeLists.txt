@@ -11,3 +11,4 @@ target_link_libraries(${This} PUBLIC gtest_main AdventOfCode)
 add_test(NAME ${This}
         COMMAND ${This}
         )
+
