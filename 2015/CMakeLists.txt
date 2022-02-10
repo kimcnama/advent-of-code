@@ -83,3 +83,12 @@ set(Sources2015Day7
         2015/src/day7/wire_manager.cpp
         )
 add_library(2015Day7 STATIC ${Headers2015Day7} ${Sources2015Day7})
+
+############################ Day8  ######################################
+set(Headers2015Day8
+        2015/inc/day8/character_memory_service.h
+        )
+set(Sources2015Day8
+        2015/src/day8/character_memory_service.cpp
+        )
+add_library(2015Day8 STATIC ${Headers2015Day8} ${Sources2015Day8})

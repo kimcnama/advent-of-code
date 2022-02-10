@@ -14,7 +14,7 @@ set(Sources
         day6/light_grid_tests.cpp
         day6/intensity_light_grid_tests.cpp
         day7/wire_tests.cpp
-        day7/wire_manager_tests.cpp)
+        day7/wire_manager_tests.cpp day8/character_memory_service_tests.cpp)
 
 add_executable(${This} ${Sources})
 target_link_libraries(${This} PUBLIC gtest_main AdventOfCode)
@@ -112,4 +112,18 @@ target_link_libraries(${Day7} PUBLIC gtest_main 2015Day7)
 add_test(NAME ${Day7}
         COMMAND ${Day7}
         )
+
+############################ Day8  ######################################
+set(Day8 2015Day8Test)
+set(SourcesDay8
+        day8/character_memory_service_tests.cpp
+        )
+
+add_executable(${Day8} ${SourcesDay8})
+target_link_libraries(${Day8} PUBLIC gtest_main 2015Day8)
+
+add_test(NAME ${Day8}
+        COMMAND ${Day8}
+        )
+
 
