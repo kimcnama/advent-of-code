@@ -67,4 +67,22 @@ void DirectedGraph::AddEdgeNode(const std::string &str_nodeName,
   this->UpdateGraph(str_destNodeName, str_nodeName, u32_edgeWeight);
 }
 
+int DirectedGraph::GetWeightBetweenNodes(const std::string &str_nodeName, const std::string &str_destNodeName) {
+  for (auto & it : _map_graph) {
+
+    if (it.first == str_nodeName) {
+      for (int i = 0; i < it.second.size(); ++i) {
+
+        if (it.second.at(i).str_destNode == str_destNodeName) {
+          return it.second.at(i).u32_edgeWeight;
+        }
+
+      }
+    }
+
+  }
+
+  return -1;
+}
+
 DirectedGraph::~DirectedGraph() = default;

@@ -19,5 +19,9 @@ TEST(PathFinderTests, SanityTests) {
   target.AddEdgeStringFormat(str_ins3);
 
   target.PrintGraph();
-  auto x =1;
+
+  target.ProcessShortestPath();
+
+  target.PrintShortestPath();
+  auto x = 1;
 }

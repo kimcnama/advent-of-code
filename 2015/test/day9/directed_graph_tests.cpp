@@ -14,4 +14,15 @@ TEST(DirectedGraphTests, SanityTests) {
 
   target.PrintGraph();
 
+  ASSERT_EQ(target.GetWeightBetweenNodes("London", "Dublin"), 464);
+  ASSERT_EQ(target.GetWeightBetweenNodes("Dublin", "London"), 464);
+
+  ASSERT_EQ(target.GetWeightBetweenNodes("Belfast", "London"), 518);
+  ASSERT_EQ(target.GetWeightBetweenNodes("London", "Belfast"), 518);
+
+  ASSERT_EQ(target.GetWeightBetweenNodes("Belfast", "Dublin"), 141);
+  ASSERT_EQ(target.GetWeightBetweenNodes("Dublin", "Belfast"), 141);
+
+  ASSERT_EQ(target.GetWeightBetweenNodes("Dublin", "Bet"), -1);
+  ASSERT_EQ(target.GetWeightBetweenNodes("G", "Dublin"), -1);
 }
