@@ -92,3 +92,12 @@ set(Sources2015Day8
         2015/src/day8/character_memory_service.cpp
         2015/src/day8/reverse_encoder.cpp)
 add_library(2015Day8 STATIC ${Headers2015Day8} ${Sources2015Day8})
+
+############################ Day9  ######################################
+set(Headers2015Day9
+        2015/inc/day9/directed_graph.h
+        2015/inc/day9/path_finder.h)
+set(Sources2015Day9
+        2015/src/day9/directed_graph.cpp
+        2015/src/day9/path_finder.cpp)
+add_library(2015Day9 STATIC ${Headers2015Day9} ${Sources2015Day9})

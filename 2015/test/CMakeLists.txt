@@ -127,4 +127,16 @@ add_test(NAME ${Day8}
         COMMAND ${Day8}
         )
 
+############################ Day9  ######################################
+set(Day9 2015Day9Test)
+set(SourcesDay9
+        day9/directed_graph_tests.cpp day9/path_finder_tests.cpp)
+
+add_executable(${Day9} ${SourcesDay9})
+target_link_libraries(${Day9} PUBLIC gtest_main 2015Day9)
+
+add_test(NAME ${Day9}
+        COMMAND ${Day9}
+        )
+
 
