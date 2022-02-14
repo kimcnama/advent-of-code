@@ -38,9 +38,28 @@ TEST(ReverseEncoderTests, SanityTests) {
   target.ProcessString(R"("abc")");
   target.ProcessString(R"("aaa\"aaa")");
   target.ProcessString(R"("\x27")");
-  
+
   ASSERT_EQ(23, target.GetNCodeChars());
   ASSERT_EQ(11, target.GetNMemoryChars());
   ASSERT_EQ(12, target.GetNCharsDiff());
   ASSERT_EQ(42, target.GetNCodeInflatedRepr());
+}
+
+TEST(ReverseEncoderTests, KnownInputTests) {
+
+  std::ifstream file("../../../2015/test/day8/test_data.in.txt");
+  std::string str_line;
+
+  auto target = ReverseEncoder();
+
+  while(getline(file, str_line)) {
+    target.ProcessString(str_line);
+  }
+
+  std::cout << "Code chars: " << target.GetNCodeChars() << std::endl;
+  std::cout << "Memory chars: " << target.GetNMemoryChars() << std::endl;
+  std::cout << "Difference: " << target.GetNCharsDiff() << std::endl << std::endl;
+
+  std::cout << "Inflated representation chars: " << target.GetNCodeInflatedRepr() << std::endl;
+  std::cout << "Difference: " << target.GetNCodeInflReprDiff() << std::endl << std::endl;
 }

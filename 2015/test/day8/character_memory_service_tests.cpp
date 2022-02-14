@@ -45,9 +45,6 @@ TEST(CharacterMemoryServiceTests, KnownInput) {
   auto target = CharacterMemoryService();
 
   while(getline(file, str_line)) {
-
-    std::cout << str_line << std::endl;
-
     target.ProcessString(str_line);
   }
 
