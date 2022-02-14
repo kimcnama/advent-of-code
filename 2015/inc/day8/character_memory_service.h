@@ -13,7 +13,10 @@ class CharacterMemoryService {
   CharacterMemoryService();
   ~CharacterMemoryService();
   void Reset();
-  void ProcessString(std::string str);
+  void ProcessString(const std::string& str);
+  uint16_t GetNCodeChars();
+  uint16_t GetNMemoryChars();
+  uint16_t GetNCharsDiff();
 
  protected:
 
