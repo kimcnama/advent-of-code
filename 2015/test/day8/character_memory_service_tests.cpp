@@ -19,10 +19,25 @@ static void AssertStringBytes(CharacterMemoryService* cls,const std::string& str
   ASSERT_EQ(0, cls->GetNCharsDiff());
 }
 
-TEST(WireManagerTest, SanityTests) {
+TEST(CharacterMemoryServiceTests, SanityTests) {
 
   auto target = CharacterMemoryService();
 
-  AssertStringBytes(&target, "\"\"", 2, 0);
-  AssertStringBytes(&target, "\"abc\"", 5, 3);
+  AssertStringBytes(&target, R"("")", 2, 0);
+  AssertStringBytes(&target, R"("abc")", 5, 3);
+  AssertStringBytes(&target, R"("aaa\"aaa")", 10, 7);
+  AssertStringBytes(&target, R"("\x27")", 6, 1);
+
+  target.ProcessString(R"("")");
+  target.ProcessString(R"("abc")");
+  target.ProcessString(R"("aaa\"aaa")");
+  target.ProcessString(R"("\x27")");
+
+  ASSERT_EQ(23, target.GetNCodeChars());
+  ASSERT_EQ(11, target.GetNMemoryChars());
+  ASSERT_EQ(12, target.GetNCharsDiff());
 }
+
+
+
+

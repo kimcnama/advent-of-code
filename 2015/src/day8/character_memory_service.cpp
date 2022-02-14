@@ -4,6 +4,9 @@
 
 #include "../../inc/day8/character_memory_service.h"
 
+#define ESCAPE_CHAR     '\\'
+#define QUOTATION_CHAR  '"'
+
 CharacterMemoryService::CharacterMemoryService() {
   this->Reset();
 }
@@ -22,6 +25,37 @@ void CharacterMemoryService::ProcessString(const std::string& str) {
 
   for (uint16_t u16_i = 0; u16_i < str.size(); ++u16_i) {
     ch = str.at(u16_i);
+
+    if (ch == ESCAPE_CHAR) {
+      ++u16_i;
+
+      if (u16_i == str.size()) {
+        break;
+      }
+      ch = str.at(u16_i);
+
+      switch (ch) {
+        case ESCAPE_CHAR:
+          ++this->_u16_nCharsMem;
+          continue;
+        case QUOTATION_CHAR:
+          ++this->_u16_nCharsMem;
+          continue;
+        case 'x':
+          ++this->_u16_nCharsMem;
+          u16_i += 2;
+          continue;
+        default:
+          break;
+      }
+
+    }
+
+    if (ch == QUOTATION_CHAR) {
+      continue;
+    }
+
+    ++this->_u16_nCharsMem;
   }
 
 
