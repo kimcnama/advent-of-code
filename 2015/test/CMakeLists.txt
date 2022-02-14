@@ -117,6 +117,7 @@ add_test(NAME ${Day7}
 set(Day8 2015Day8Test)
 set(SourcesDay8
         day8/character_memory_service_tests.cpp
+        day8/reverse_encoder_tests.cpp
         )
 
 add_executable(${Day8} ${SourcesDay8})

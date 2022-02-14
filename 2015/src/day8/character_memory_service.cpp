@@ -4,9 +4,6 @@
 
 #include "../../inc/day8/character_memory_service.h"
 
-#define ESCAPE_CHAR     '\\'
-#define QUOTATION_CHAR  '"'
-
 CharacterMemoryService::CharacterMemoryService() {
   this->Reset();
 }
@@ -17,7 +14,7 @@ void CharacterMemoryService::Reset() {
 }
 
 void CharacterMemoryService::ProcessString(const std::string& str) {
-  char ch, ch2;
+  char ch;
   uint16_t u16_charsCode = 0;
   uint16_t u16_charsMem = 0;
 

@@ -8,18 +8,20 @@
 #include <string>
 #include <cstdint>
 
+#define ESCAPE_CHAR     '\\'
+#define QUOTATION_CHAR  '"'
+
 class CharacterMemoryService {
  public:
   CharacterMemoryService();
   ~CharacterMemoryService();
-  void Reset();
-  void ProcessString(const std::string& str);
+  virtual void Reset();
+  virtual void ProcessString(const std::string& str);
   uint16_t GetNCodeChars();
   uint16_t GetNMemoryChars();
   uint16_t GetNCharsDiff();
 
  protected:
-
   uint16_t _u16_nCharsCode;
   uint16_t _u16_nCharsMem;
   uint16_t _u16_nCharsDiff;

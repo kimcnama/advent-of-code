@@ -38,6 +38,24 @@ TEST(CharacterMemoryServiceTests, SanityTests) {
   ASSERT_EQ(12, target.GetNCharsDiff());
 }
 
+TEST(CharacterMemoryServiceTests, KnownInput) {
+  std::ifstream file("../../../2015/test/day8/test_data.in.txt");
+  std::string str_line;
 
+  auto target = CharacterMemoryService();
 
+  while(getline(file, str_line)) {
 
+    std::cout << str_line << std::endl;
+
+    target.ProcessString(str_line);
+  }
+
+  std::cout << "Code chars: " << target.GetNCodeChars() << std::endl;
+  std::cout << "Memory chars: " << target.GetNMemoryChars() << std::endl;
+  std::cout << "Difference: " << target.GetNCharsDiff() << std::endl;
+
+  ASSERT_EQ(6195, target.GetNCodeChars());
+  ASSERT_EQ(4845, target.GetNMemoryChars());
+  ASSERT_EQ(1350, target.GetNCharsDiff());
+}
