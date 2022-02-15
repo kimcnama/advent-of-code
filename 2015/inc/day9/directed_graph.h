@@ -19,8 +19,8 @@ class DirectedGraph {
   DirectedGraph();
   ~DirectedGraph();
   void AddEdgeNode(const std::string &str_nodeName, const std::string &str_destNodeName, uint32_t u32_edgeWeight);
-  int GetWeightBetweenNodes(const std::string &str_nodeName, const std::string &str_destNodeName);
   virtual void PrintGraph();
+  virtual int GetWeightBetweenNodes(const std::string &str_nodeName, const std::string &str_destNodeName);
  protected:
   void UpdateGraph(const std::string &str_nodeName, const std::string &str_destNodeName, uint32_t u32_edgeWeight);
 

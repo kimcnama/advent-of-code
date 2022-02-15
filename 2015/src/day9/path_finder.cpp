@@ -21,8 +21,10 @@ static bool VecContainsString(const std::vector<std::string>& v, const std::stri
 void PathFinder::AddEdgeStringFormat(const std::string& str_line) {
 
   std::string str_source = str_line.substr(0, str_line.find(DELIMITER_NODES));
-  std::string str_dest = str_line.substr(str_line.find(DELIMITER_NODES) + std::string(DELIMITER_NODES).size(), str_line.find(DELIMITER_EDGES));
-  std::string str_weight = str_line.substr(str_line.find(DELIMITER_EDGES) + std::string(DELIMITER_EDGES).size() + 1);
+  std::string str_temp = str_line.substr(str_line.find(DELIMITER_NODES) + std::string(DELIMITER_NODES).size());
+
+  std::string str_dest = str_temp.substr(0, str_temp.find(DELIMITER_EDGES));
+  std::string str_weight = str_temp.substr(str_temp.find(DELIMITER_EDGES) + std::string(DELIMITER_EDGES).size());
 
   this->AddEdgeNode(str_source, str_dest, (uint32_t)atoi(str_weight.c_str()));
 }
@@ -61,6 +63,12 @@ void PathFinder::RecursivePathSearch(const std::string& str_travelToNode, uint32
   _u32_currPathLen += u32_dist;
 
   if (this->AllNodesVisited()) {
+
+    for (auto & it : _vec_visited) {
+      std::cout << it << " -> ";
+    }
+    std::cout << _u32_currPathLen << std::endl;
+
     if (_u32_currPathLen < _u32_shortestPathLen) {
       _u32_shortestPathLen = _u32_currPathLen;
       _vec_shortestPath.clear();
@@ -77,6 +85,10 @@ void PathFinder::RecursivePathSearch(const std::string& str_travelToNode, uint32
       for (auto & neighbour : node.second) {
 
         RecursivePathSearch(neighbour.str_destNode, neighbour.u32_edgeWeight);
+
+        if (this->AllNodesVisited()) {
+          return;
+        }
 
       }
     }
@@ -104,4 +116,7 @@ void PathFinder::PrintShortestPath() {
     }
   }
   std::cout << this->_u32_shortestPathLen << std::endl;
+}
+int PathFinder::GetWeightBetweenNodes(const std::string &str_nodeName, const std::string &str_destNodeName) {
+  return DirectedGraph::GetWeightBetweenNodes(str_nodeName, str_destNodeName);
 }
