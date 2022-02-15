@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 #include <fstream>
-#include "../../inc/day9/directed_graph.h"
 #include "../../inc/day9/path_finder.h"
 
 static void AssertGraphEdges(PathFinder* cls, const std::string& src, const std::string& dst, int i_exp) {
