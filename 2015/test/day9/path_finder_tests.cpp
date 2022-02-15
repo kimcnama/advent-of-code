@@ -91,6 +91,8 @@ TEST(PathFinderTests, InputTests) {
   target.ProcessShortestPath();
 
   target.PrintShortestPath();
+  target.PrintLongestPath();
 
   ASSERT_EQ(target.GetShortestPathLen(), 207);
+  ASSERT_EQ(target.GetLongestPathLen(), 804);
 }
