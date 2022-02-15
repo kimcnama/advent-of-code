@@ -33,6 +33,8 @@ TEST(PathFinderTests, SanityTests) {
   AssertGraphEdges(&target, "London", "Dublin", 464);
   AssertGraphEdges(&target, "London", "Belfast", 518);
   AssertGraphEdges(&target, "Dublin", "Belfast", 141);
+
+  ASSERT_EQ(target.GetShortestPathLen(), 605);
 }
 
 TEST(PathFinderTests, GraphEdgeInputTests) {
@@ -70,7 +72,6 @@ TEST(PathFinderTests, GraphEdgeInputTests) {
   AssertGraphEdges(&target, "Arbre", "Snowdin", 129);
   AssertGraphEdges(&target, "Arbre", "Tambi", 53);
   AssertGraphEdges(&target, "Arbre", "Straylight", 40);
-
   AssertGraphEdges(&target, "Snowdin", "Tambi", 15);
   AssertGraphEdges(&target, "Snowdin", "Straylight", 99);
   AssertGraphEdges(&target, "Tambi", "Straylight", 70);
@@ -87,9 +88,9 @@ TEST(PathFinderTests, InputTests) {
     target.AddEdgeStringFormat(str_line);
   }
 
-  target.PrintGraph();
-
   target.ProcessShortestPath();
 
   target.PrintShortestPath();
+
+  ASSERT_EQ(target.GetShortestPathLen(), 207);
 }

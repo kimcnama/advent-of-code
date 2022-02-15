@@ -17,6 +17,7 @@ class PathFinder : DirectedGraph {
   void PrintShortestPath();
   ~PathFinder();
   int GetWeightBetweenNodes(const std::string &str_nodeName, const std::string &str_destNodeName);
+  uint32_t GetShortestPathLen();
 
  protected:
   void RecursivePathSearch(const std::string& str_travelToNode, uint32_t u32_dist);

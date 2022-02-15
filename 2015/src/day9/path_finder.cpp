@@ -64,11 +64,6 @@ void PathFinder::RecursivePathSearch(const std::string& str_travelToNode, uint32
 
   if (this->AllNodesVisited()) {
 
-    for (auto & it : _vec_visited) {
-      std::cout << it << " -> ";
-    }
-    std::cout << _u32_currPathLen << std::endl;
-
     if (_u32_currPathLen < _u32_shortestPathLen) {
       _u32_shortestPathLen = _u32_currPathLen;
       _vec_shortestPath.clear();
@@ -76,7 +71,6 @@ void PathFinder::RecursivePathSearch(const std::string& str_travelToNode, uint32
         _vec_shortestPath.push_back(it);
       }
     }
-    return;
   }
 
   for (auto & node : _map_graph) {
@@ -86,14 +80,11 @@ void PathFinder::RecursivePathSearch(const std::string& str_travelToNode, uint32
 
         RecursivePathSearch(neighbour.str_destNode, neighbour.u32_edgeWeight);
 
-        if (this->AllNodesVisited()) {
-          return;
-        }
-
       }
     }
   }
-
+  _u32_currPathLen -= u32_dist;
+  _vec_visited.pop_back();
 }
 bool PathFinder::AllNodesVisited() {
   for (auto & node : _map_graph) {
@@ -106,6 +97,8 @@ bool PathFinder::AllNodesVisited() {
   return true;
 }
 void PathFinder::PrintShortestPath() {
+  std::cout << std::endl;
+
   for (auto i = 0; i < this->_vec_shortestPath.size(); ++i) {
 
     std::cout << this->_vec_shortestPath.at(i);
@@ -119,4 +112,7 @@ void PathFinder::PrintShortestPath() {
 }
 int PathFinder::GetWeightBetweenNodes(const std::string &str_nodeName, const std::string &str_destNodeName) {
   return DirectedGraph::GetWeightBetweenNodes(str_nodeName, str_destNodeName);
+}
+uint32_t PathFinder::GetShortestPathLen() {
+  return this->_u32_shortestPathLen;
 }
