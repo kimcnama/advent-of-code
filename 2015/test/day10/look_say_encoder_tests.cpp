@@ -34,3 +34,13 @@ TEST(LookSayEncoderTests, KnownInputTest) {
 
   ASSERT_EQ(target.GetDigestLength(), 360154);
 }
+
+TEST(LookSayEncoderTests, KnownInputTestPart2) {
+
+  auto target = LookSayEncoder();
+  target.SetMessage("1113122113");
+  target.ProcessMessageNTimes(50);
+  std::cout << "Digest Length: " << target.GetDigestLength() << std::endl;
+
+  ASSERT_EQ(target.GetDigestLength(), 5103798);
+}
