@@ -101,3 +101,11 @@ set(Sources2015Day9
         2015/src/day9/directed_graph.cpp
         2015/src/day9/path_finder.cpp)
 add_library(2015Day9 STATIC ${Headers2015Day9} ${Sources2015Day9})
+
+############################ Day10  ######################################
+set(Headers2015Day10
+        2015/inc/day10/look_say_encoder.h
+        )
+set(Sources2015Day10
+        2015/src/day10/look_say_encoder.cpp)
+add_library(2015Day10 STATIC ${Headers2015Day10} ${Sources2015Day10})
