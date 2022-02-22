@@ -109,3 +109,10 @@ set(Headers2015Day10
 set(Sources2015Day10
         2015/src/day10/look_say_encoder.cpp)
 add_library(2015Day10 STATIC ${Headers2015Day10} ${Sources2015Day10})
+
+############################ Day11  ######################################
+set(Headers2015Day11
+        2015/inc/day11/password_gen.h)
+set(Sources2015Day11
+        2015/src/day11/password_gen.cpp)
+add_library(2015Day11 STATIC ${Headers2015Day11} ${Sources2015Day11})

@@ -151,4 +151,16 @@ add_test(NAME ${Day10}
         COMMAND ${Day10}
         )
 
+############################ Day11  ######################################
+set(Day11 2015Day11Test)
+set(SourcesDay11
+        day11/password_gen_tests.cpp)
+
+add_executable(${Day11} ${SourcesDay11})
+target_link_libraries(${Day11} PUBLIC gtest_main 2015Day11)
+
+add_test(NAME ${Day11}
+        COMMAND ${Day11}
+        )
+
 
