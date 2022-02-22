@@ -94,4 +94,8 @@ TEST(PasswordGenTests, NextPasswordTest) {
   target.SetInitPassword("cqjxjnds");
   target.ProcessNextPassword();
   ASSERT_EQ(target.GetNextPassword(), "cqjxxyzz");
+
+  target.SetInitPassword(target.GetNextPassword());
+  target.ProcessNextPassword();
+  ASSERT_EQ(target.GetNextPassword(), "cqkaabcc");
 }
