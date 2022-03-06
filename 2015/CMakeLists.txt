@@ -116,3 +116,10 @@ set(Headers2015Day11
 set(Sources2015Day11
         2015/src/day11/password_gen.cpp)
 add_library(2015Day11 STATIC ${Headers2015Day11} ${Sources2015Day11})
+
+############################ Day12  ######################################
+set(Headers2015Day12
+        2015/inc/day12/json_summer.h)
+set(Sources2015Day12
+        2015/src/day12/json_summer.cpp)
+add_library(2015Day12 STATIC ${Headers2015Day12} ${Sources2015Day12})
