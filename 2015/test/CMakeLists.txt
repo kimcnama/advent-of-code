@@ -139,4 +139,28 @@ add_test(NAME ${Day9}
         COMMAND ${Day9}
         )
 
+############################ Day10  ######################################
+set(Day10 2015Day10Test)
+set(SourcesDay10
+        day10/look_say_encoder_tests.cpp)
+
+add_executable(${Day10} ${SourcesDay10})
+target_link_libraries(${Day10} PUBLIC gtest_main 2015Day10)
+
+add_test(NAME ${Day10}
+        COMMAND ${Day10}
+        )
+
+############################ Day11  ######################################
+set(Day11 2015Day11Test)
+set(SourcesDay11
+        day11/password_gen_tests.cpp)
+
+add_executable(${Day11} ${SourcesDay11})
+target_link_libraries(${Day11} PUBLIC gtest_main 2015Day11)
+
+add_test(NAME ${Day11}
+        COMMAND ${Day11}
+        )
+
 

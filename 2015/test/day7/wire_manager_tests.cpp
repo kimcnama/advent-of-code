@@ -70,7 +70,7 @@ TEST(WireManagerTest, KnownInput) {
   }
 
   uint16_t u16_i = 0;
-  while(outstandingIns.size() > 0) {
+  while(!outstandingIns.empty()) {
     str_line = outstandingIns.at(u16_i);
 
     if (cls.ExeInstructionLine(str_line)) {
@@ -109,7 +109,7 @@ TEST(WireManagerTest, KnownInputPart2) {
   }
 
   uint16_t u16_i = 0;
-  while(outstandingIns.size() > 0) {
+  while(!outstandingIns.empty()) {
     str_line = outstandingIns.at(u16_i);
 
     if (cls.ExeInstructionLine(str_line)) {
