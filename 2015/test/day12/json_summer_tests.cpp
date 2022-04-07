@@ -26,6 +26,7 @@ TEST(JsonSummerTests, SanityTest) {
   ASSERT_EQ(target.GetSum(), 0);
 }
 
+// problem with getting wrong child objects
 TEST(JsonSummerTests, KnownInputTest) {
 
   auto target = JsonSummer();

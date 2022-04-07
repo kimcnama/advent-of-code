@@ -20,3 +20,16 @@ TEST(JsonSummerExcTests, SanityTest) {
     TestJson(&target, R"({"d":"red","e":[1,2,3,4],"f":5})", 0);
     TestJson(&target, R"([1,"red",5])", 6);
 }
+
+TEST(JsonSummerExcTests, KnownInputTest) {
+
+    auto target = JsonSummerExc("red");
+
+    std::ifstream file("../../../2015/test/day12/test_data.in.txt");
+    std::string str_line;
+
+    while(getline(file, str_line)) {
+        TestJson(&target, str_line, 6);
+    }
+
+}
