@@ -8,7 +8,7 @@
 #define CHAR_CLOSE_OBJ      ('}')
 #define CHAR_OPEN_ARR       ('[')
 #define CHAR_CLOSE_ARR      (']')
-#define CHAR_MINUS          ('-')
+
 
 JsonSummerExc::JsonSummerExc(const std::string& str_exc) {
     this->_str_exception = str_exc;
@@ -36,27 +36,71 @@ void JsonSummerExc::ProcessJson() {
     this->RecursiveSum(&str_json);
 }
 
-// Check if exception string starts or ends at current index
-static bool IsExcObjInCurrObj(const std::string& str_obj, const std::string& str_exc, uint32_t curr_i, bool b_backCount) {
+// Given index of start of obj, find end index of current obj, excluding its children
+static uint32_t FindCloseEndDelimIndex(const std::string& str_obj, const uint32_t curr_i, bool b_isObj) {
 
-    uint32_t u32_objI;
-    for (uint32_t i = 0; i < str_exc.size(); ++i) {
+    uint32_t u32_stackCounter = 0;
+    char ch_endDelim, ch_startDelim;
+    if ( b_isObj ) {
+        ch_startDelim = CHAR_OPEN_OBJ;
+        ch_endDelim = CHAR_CLOSE_OBJ;
+    } else {
+        ch_startDelim = CHAR_OPEN_ARR;
+        ch_endDelim = CHAR_CLOSE_ARR;
+    }
 
-        if (b_backCount) {
-            u32_objI = curr_i + i;
-        } else {
-            u32_objI = curr_i - str_exc.size() + 1 + i;
+    for (uint32_t i = curr_i + 1; i < str_obj.size(); ++i) {
+
+        if ( str_obj.at(i) == ch_endDelim ) {
+
+            if ( u32_stackCounter == 0 ) {
+                return i;
+            } else {
+                --u32_stackCounter;
+            }
+
+        } else if ( str_obj.at(i) == ch_startDelim ) {
+            ++u32_stackCounter;
         }
 
-        if ( str_exc.at(i) != str_obj.at(u32_objI) ) {
-            return false;
+    }
+    return str_obj.size() - 1;
+}
+
+// Checks if illegal substr in current obj (ignoring its children)
+static bool IsExcStrInCurrObj(const std::string& str_obj, const std::string& str_exc) {
+
+    bool b_doesContainSubstr;
+    char ch_obj, ch_exc;
+    for (uint32_t i = 1; i < str_obj.size() - str_exc.size(); ++i) {
+
+        ch_obj = str_obj.at(i);
+
+        if ( ch_obj == CHAR_OPEN_ARR ) {
+            i = FindCloseEndDelimIndex(str_obj, i, false);
+        } else if ( ch_obj == CHAR_OPEN_OBJ ) {
+            i = FindCloseEndDelimIndex(str_obj, i, true);
+        }
+
+        b_doesContainSubstr = true;
+        for (uint32_t j = 0; j < str_exc.size(); ++j) {
+            ch_obj = str_obj.at(i + j);
+            ch_exc = str_exc.at(j);
+            if ( ch_exc != ch_obj ) {
+                b_doesContainSubstr = false;
+                break;
+            }
+        }
+        if (b_doesContainSubstr) {
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
 
-// Calls itself recursively everytime a child object is found
+
+// Func to keep sum of numbers in json, recursively calling itself for its children objects
 void JsonSummerExc::RecursiveSum(std::string *ptr_str) {
 
     // If empty JSON or array
@@ -66,69 +110,42 @@ void JsonSummerExc::RecursiveSum(std::string *ptr_str) {
 
     // If current object is array, than can ignore checks later where we ignore obj if contains red
     bool b_currObjIsArray = ptr_str->at(0) == CHAR_OPEN_ARR &&
-            ptr_str->at(ptr_str->size() - 1) == CHAR_CLOSE_ARR;
+                            ptr_str->at(ptr_str->size() - 1) == CHAR_CLOSE_ARR;
 
-    uint32_t u16_firstChildObjOpenI = 0;
-    uint32_t u16_firstChildObjCloseI = ptr_str->size() - 1;
-    bool b_childObjOpenFound = false;
-    bool b_childObjCloseFound = false;
-    bool b_excStringInCurrObj = false;
-
-    // iterate backwards and forwards through array at same time
-    // u16_backCounter is iterating backwards and u32_i forwards
-    // Iterators starting at 1 and len - 2 (to ignore '{' and '}' chars of JSON)
-    uint32_t u16_backCounter;
-    for (uint32_t u32_i = 1; u32_i < ptr_str->size(); ++u32_i) {
-
-        // get backwards iterator
-        u16_backCounter = ptr_str->size() - u32_i - 1;
-
-        // If long far enough into json, check is exception string starts or ends at curr indices
-        if (u32_i >= this->_str_exception.size() - 1 && !b_currObjIsArray) {
-            if (!b_childObjOpenFound) {
-                b_excStringInCurrObj |=
-                        IsExcObjInCurrObj(*ptr_str, this->_str_exception, u32_i, false);
-            }
-            if (!b_childObjCloseFound) {
-                b_excStringInCurrObj |=
-                        IsExcObjInCurrObj(*ptr_str, this->_str_exception, u16_backCounter, true);
-            }
-        }
-
-        // if exception string in object, return before count is done later
-        if (b_excStringInCurrObj) {
-            return;
-        }
-
-        // If found start of first child object, note index
-        if (ptr_str->at(u32_i) == CHAR_OPEN_OBJ && !b_childObjOpenFound ) {
-            u16_firstChildObjOpenI = u32_i;
-            b_childObjOpenFound = true;
-        }
-
-        // If found end of first child object, note index
-        if ( ptr_str->at(u16_backCounter) == CHAR_CLOSE_OBJ && !b_childObjCloseFound ) {
-            u16_firstChildObjCloseI = u16_backCounter;
-            b_childObjCloseFound = true;
-        }
-
-        // if start and end index found of child object, break and call func recursively with substr of those indices
-        if (b_childObjOpenFound && b_childObjCloseFound) {
-            break;
-        }
+    // If exception string in current object (ignoring children objects) than return and do not add to sum
+    if (!b_currObjIsArray && IsExcStrInCurrObj(*ptr_str, this->_str_exception)) {
+        return;
     }
 
-    // if child object found, call func recursively with child object
-    if (b_childObjOpenFound && b_childObjCloseFound) {
-        std::string sub_str = ptr_str->substr(u16_firstChildObjOpenI, u16_firstChildObjCloseI - u16_firstChildObjOpenI);
-        RecursiveSum(&sub_str);
+    uint32_t u32_childOpenI, u32_childCloseI;
+    uint32_t u32_strLen = ptr_str->size();
+    uint32_t u32_i = 1;
 
-        // erase child object from current object as sum is handled in recursive call
-        ptr_str->erase(u16_firstChildObjOpenI, u16_firstChildObjCloseI - u16_firstChildObjOpenI + 1);
+    while (u32_i < u32_strLen) {
+
+        // If found start of first child object
+        if (ptr_str->at(u32_i) == CHAR_OPEN_OBJ || ptr_str->at(u32_i) == CHAR_OPEN_ARR ) {
+
+            // Get start index of child obj and find end index of child obj
+            u32_childOpenI = u32_i;
+            u32_childCloseI = FindCloseEndDelimIndex(*ptr_str, u32_i, ptr_str->at(u32_i) == CHAR_OPEN_OBJ);
+
+            // Get substr of child obj and pass into recursive func
+            std::string sub_str = ptr_str->substr(u32_childOpenI, u32_childCloseI - u32_childOpenI + 1);
+            this->RecursiveSum(&sub_str);
+
+            // erase child object from current object as sum is handled in recursive call
+            ptr_str->erase(u32_childOpenI, u32_childCloseI - u32_childOpenI + 1);
+        }
+
+        // Update length incase substr removed and update counter
+        u32_strLen = ptr_str->size();
+        ++u32_i;
     }
 
     // Now that child objects removed and object does not contain exception string, sum numbers in obj
     JsonSummer::ProcessJson(*ptr_str);
     this->i32_totSum += _i32_sum;
 }
+
 
