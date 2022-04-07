@@ -36,7 +36,7 @@ void JsonSummerExc::ProcessJson() {
     this->RecursiveSum(&str_json);
 }
 
-
+// Check if exception string starts or ends at current index
 static bool IsExcObjInCurrObj(const std::string& str_obj, const std::string& str_exc, uint32_t curr_i, bool b_backCount) {
 
     uint32_t u32_objI;
@@ -56,14 +56,15 @@ static bool IsExcObjInCurrObj(const std::string& str_obj, const std::string& str
     return true;
 }
 
-
+// Calls itself recursively everytime a child object is found
 void JsonSummerExc::RecursiveSum(std::string *ptr_str) {
 
-    // If empty JSON
+    // If empty JSON or array
     if (ptr_str->size() < 3) {
         return;
     }
 
+    // If current object is array, than can ignore checks later where we ignore obj if contains red
     bool b_currObjIsArray = ptr_str->at(0) == CHAR_OPEN_ARR &&
             ptr_str->at(ptr_str->size() - 1) == CHAR_CLOSE_ARR;
 
@@ -73,10 +74,16 @@ void JsonSummerExc::RecursiveSum(std::string *ptr_str) {
     bool b_childObjCloseFound = false;
     bool b_excStringInCurrObj = false;
 
+    // iterate backwards and forwards through array at same time
+    // u16_backCounter is iterating backwards and u32_i forwards
+    // Iterators starting at 1 and len - 2 (to ignore '{' and '}' chars of JSON)
     uint32_t u16_backCounter;
     for (uint32_t u32_i = 1; u32_i < ptr_str->size(); ++u32_i) {
 
+        // get backwards iterator
         u16_backCounter = ptr_str->size() - u32_i - 1;
+
+        // If long far enough into json, check is exception string starts or ends at curr indices
         if (u32_i >= this->_str_exception.size() - 1 && !b_currObjIsArray) {
             if (!b_childObjOpenFound) {
                 b_excStringInCurrObj |=
@@ -88,32 +95,39 @@ void JsonSummerExc::RecursiveSum(std::string *ptr_str) {
             }
         }
 
+        // if exception string in object, return before count is done later
         if (b_excStringInCurrObj) {
             return;
         }
 
+        // If found start of first child object, note index
         if (ptr_str->at(u32_i) == CHAR_OPEN_OBJ && !b_childObjOpenFound ) {
             u16_firstChildObjOpenI = u32_i;
             b_childObjOpenFound = true;
         }
 
+        // If found end of first child object, note index
         if ( ptr_str->at(u16_backCounter) == CHAR_CLOSE_OBJ && !b_childObjCloseFound ) {
             u16_firstChildObjCloseI = u16_backCounter;
             b_childObjCloseFound = true;
         }
 
+        // if start and end index found of child object, break and call func recursively with substr of those indices
         if (b_childObjOpenFound && b_childObjCloseFound) {
             break;
         }
     }
 
+    // if child object found, call func recursively with child object
     if (b_childObjOpenFound && b_childObjCloseFound) {
         std::string sub_str = ptr_str->substr(u16_firstChildObjOpenI, u16_firstChildObjCloseI - u16_firstChildObjOpenI);
         RecursiveSum(&sub_str);
+
+        // erase child object from current object as sum is handled in recursive call
         ptr_str->erase(u16_firstChildObjOpenI, u16_firstChildObjCloseI - u16_firstChildObjOpenI + 1);
     }
 
-    // recursive call for json objects above, now sum current object appropriately
+    // Now that child objects removed and object does not contain exception string, sum numbers in obj
     JsonSummer::ProcessJson(*ptr_str);
     this->i32_totSum += _i32_sum;
 }
