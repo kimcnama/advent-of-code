@@ -19,6 +19,10 @@ TEST(JsonSummerExcTests, SanityTest) {
     TestJson(&target, R"([1,{"c":"red","b":2},3])", 4);
     TestJson(&target, R"({"d":"red","e":[1,2,3,4],"f":5})", 0);
     TestJson(&target, R"([1,"red",5])", 6);
+
+    TestJson(&target, R"({1:"green",{"c":"red","b":2},{3:3, 2:8},3:"yellow"})", 20);
+
+    TestJson(&target, R"({"a":[120,169,"green","red","orange"],"b":"red"})", 0);
 }
 
 TEST(JsonSummerExcTests, KnownInputTest) {
@@ -29,7 +33,7 @@ TEST(JsonSummerExcTests, KnownInputTest) {
     std::string str_line;
 
     while(getline(file, str_line)) {
-        TestJson(&target, str_line, 6);
+        TestJson(&target, str_line, 65402);
     }
 
 }
