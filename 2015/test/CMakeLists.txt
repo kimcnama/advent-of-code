@@ -166,7 +166,7 @@ add_test(NAME ${Day11}
 ############################ Day12  ######################################
 set(Day12 2015Day12Test)
 set(SourcesDay12
-        day12/json_summer_tests.cpp)
+        day12/json_summer_tests.cpp day12/json_summer_exc_tests.cpp)
 
 add_executable(${Day12} ${SourcesDay12})
 target_link_libraries(${Day12} PUBLIC gtest_main 2015Day12)
