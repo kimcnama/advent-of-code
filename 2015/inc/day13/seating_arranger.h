@@ -20,7 +20,7 @@ public:
     ~SeatingArranger();
     void AddEdge(const std::string& str_characterName, const std::string& str_neighbourName, int i32_happiness);
     void ProcessArrangements();
-    [[nodiscard]] int GetOptimalArrangement() const;
+    int GetOptimalArrangement() const;
     void PrintOptimalArrangement();
     void PrintMap();
 
@@ -28,7 +28,7 @@ protected:
     SeatingNeighbour* GetNeighboursHead(const std::string &str_characterName);
     void UpdateMap(const std::string& str_characterName, const std::string& str_neighbourName, int i32_happiness);
 
-    int _i32_optimalArrangement{};
+    int _i32_optimalArrangement;
     std::string _str_optimalArrangement;
     std::map<std::string, SeatingNeighbour*> _map_graph;
 };
