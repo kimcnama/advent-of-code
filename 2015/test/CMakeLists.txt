@@ -175,4 +175,16 @@ add_test(NAME ${Day12}
         COMMAND ${Day12}
         )
 
+############################ Day13  ######################################
+set(Day13 2015Day13Test)
+set(SourcesDay13
+        day13/seating_arranger_tests.cpp)
+
+add_executable(${Day13} ${SourcesDay13})
+target_link_libraries(${Day13} PUBLIC gtest_main 2015Day13)
+
+add_test(NAME ${Day13}
+        COMMAND ${Day13}
+        )
+
 

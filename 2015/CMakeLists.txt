@@ -125,3 +125,10 @@ set(Sources2015Day12
         2015/src/day12/json_summer.cpp
         2015/src/day12/json_summer_exc.cpp)
 add_library(2015Day12 STATIC ${Headers2015Day12} ${Sources2015Day12})
+
+############################ Day13  ######################################
+set(Headers2015Day13
+        2015/inc/day13/seating_arranger.h)
+set(Sources2015Day13
+        2015/src/day13/seating_arranger.cpp)
+add_library(2015Day13 STATIC ${Headers2015Day13} ${Sources2015Day13})
