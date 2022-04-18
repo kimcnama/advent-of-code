@@ -27,6 +27,7 @@ public:
 protected:
     SeatingNeighbour* GetNeighboursHead(const std::string &str_characterName);
     void UpdateMap(const std::string& str_characterName, const std::string& str_neighbourName, int i32_happiness);
+    void RecursiveSearch(const std::string& str_currName, int* i32_currCount, std::map<std::string, bool>& map_visited);
 
     int _i32_optimalArrangement;
     std::string _str_optimalArrangement;

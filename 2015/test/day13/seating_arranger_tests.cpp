@@ -21,5 +21,7 @@ TEST(JsonSummerTests, SanityTest) {
     target.AddEdge("David", "Bob", -7);
     target.AddEdge("David", "Carol", 41);
 
-    target.PrintMap();
+//    target.PrintMap();
+    target.ProcessArrangements();
+    target.PrintOptimalArrangement();
 }
