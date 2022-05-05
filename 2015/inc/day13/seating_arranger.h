@@ -20,17 +20,16 @@ public:
     ~SeatingArranger();
     void AddEdge(const std::string& str_characterName, const std::string& str_neighbourName, int i32_happiness);
     void ProcessArrangements();
-    int GetOptimalArrangement() const;
-    void PrintOptimalArrangement();
+    int GetOptimalArrangementScore() const;
     void PrintMap();
 
 protected:
     SeatingNeighbour* GetNeighboursHead(const std::string &str_characterName);
     void UpdateMap(const std::string& str_characterName, const std::string& str_neighbourName, int i32_happiness);
-    void RecursiveSearch(const std::string& str_currName, int* i32_currCount, std::map<std::string, bool>& map_visited);
+    void RecursiveSearch(const std::string& str_headName, const std::string& str_currName, int& i32_currCount,
+                         std::map<std::string, bool>& map_visited, const int i32_happiness);
 
     int _i32_optimalArrangement;
-    std::string _str_optimalArrangement;
     std::map<std::string, SeatingNeighbour*> _map_graph;
 };
 

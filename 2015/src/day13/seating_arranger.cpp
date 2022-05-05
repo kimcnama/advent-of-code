@@ -26,11 +26,12 @@ SeatingArranger::~SeatingArranger() {
     }
 };
 
-int SeatingArranger::GetOptimalArrangement() const {
+int SeatingArranger::GetOptimalArrangementScore() const {
     return this->_i32_optimalArrangement;
 }
 
 void SeatingArranger::ProcessArrangements() {
+    // Largest negative number hex
     this->_i32_optimalArrangement = 0x80000000;
     SeatingNeighbour* p_curr;
     int i32_currCount;
@@ -43,14 +44,28 @@ void SeatingArranger::ProcessArrangements() {
             map_visited[it_clear.first] = false;
         }
         std::cout << std::endl;
-        this->RecursiveSearch(it.first, &i32_currCount, map_visited);
+        this->RecursiveSearch(it.first, it.first, i32_currCount, map_visited, 0);
     }
 }
 
-void SeatingArranger::RecursiveSearch(const std::string& str_currName, int* i32_currCount, std::map<std::string,
-                                      bool>& map_visited) {
+void SeatingArranger::RecursiveSearch(const std::string& str_headName, const std::string& str_currName,
+                                      int& i32_currCount, std::map<std::string, bool>& map_visited,
+                                      const int i32_happiness) {
 
-    // If all visited
+    if (map_visited[str_currName]) {
+        return;
+    }
+
+//    this->_vec_currArrangment.push_back(str_currName);
+
+    SeatingNeighbour* pt_tempNeighbour;
+    SeatingNeighbour* pt_currNeighbourHead = this->GetNeighboursHead(str_currName);
+
+    i32_currCount += i32_happiness;
+    map_visited[str_currName] = true;
+
+    std::cout << " " << str_currName << " ";
+
     bool b_allVisited = true;
     for (const auto & it : map_visited) {
         if (!it.second) {
@@ -60,30 +75,43 @@ void SeatingArranger::RecursiveSearch(const std::string& str_currName, int* i32_
     }
 
     if (b_allVisited) {
-        if (*i32_currCount > this->_i32_optimalArrangement) {
-            this->_i32_optimalArrangement = *i32_currCount;
-            std::cout << "\nNew Happiness: " << this->_i32_optimalArrangement << std::endl;
-            return;
+        pt_tempNeighbour = pt_currNeighbourHead;
+        while (pt_tempNeighbour != nullptr && pt_tempNeighbour->str_neighbour != str_headName) {
+            pt_tempNeighbour = pt_tempNeighbour->pt_next;
         }
-    }
+        if (pt_tempNeighbour != nullptr) {
+            i32_currCount += pt_tempNeighbour->i32_happiness;
+        }
 
-    if (map_visited[str_currName]) {
+        std::cout << " Curr Happiness: " << i32_currCount << std::endl;
+
+        if (i32_currCount > this->_i32_optimalArrangement) {
+            this->_i32_optimalArrangement = i32_currCount;
+            std::cout << "\nNew Happiness: " << this->_i32_optimalArrangement << std::endl;
+            i32_currCount -= i32_happiness;
+            map_visited[str_currName] = false;
+
+            if (pt_tempNeighbour != nullptr) {
+                i32_currCount -= pt_tempNeighbour->i32_happiness;
+            }
+        }
         return;
     }
 
-    map_visited[str_currName] = true;
-
-    std::cout << " " << str_currName << " ";
+    std::cout << " Curr Happiness: " << i32_currCount << std::endl;
 
     for (const auto & it : this->_map_graph) {
         if (it.first == str_currName) {
             continue;
         }
-        *i32_currCount += it.second->i32_happiness;
-        this->RecursiveSearch(it.first, i32_currCount, map_visited);
-        *i32_currCount -= it.second->i32_happiness;
+        pt_tempNeighbour = pt_currNeighbourHead;
+        while (pt_tempNeighbour != nullptr && pt_tempNeighbour->str_neighbour != it.first) {
+            pt_tempNeighbour = pt_tempNeighbour->pt_next;
+        }
+        this->RecursiveSearch(str_headName, it.first, i32_currCount, map_visited, pt_tempNeighbour->i32_happiness);
     }
 
+    i32_currCount -= i32_happiness;
     map_visited[str_currName] = false;
 }
 
@@ -91,10 +119,6 @@ void SeatingArranger::AddEdge(const std::string &str_characterName, const std::s
                               int i32_happiness) {
     this->UpdateMap(str_characterName, str_neighbourName, i32_happiness);
     this->UpdateMap(str_neighbourName, str_characterName, i32_happiness);
-}
-
-void SeatingArranger::PrintOptimalArrangement() {
-    return;
 }
 
 
@@ -110,7 +134,6 @@ static SeatingNeighbour* CreateNewNeighbour(const std::string& str_neighbourName
 void SeatingArranger::UpdateMap(const std::string &str_characterName, const std::string &str_neighbourName,
                                 int i32_happiness) {
 
-    bool b_alreadyNeighbour = false;
     SeatingNeighbour* pt_curr = this->GetNeighboursHead(str_characterName);
     SeatingNeighbour* pt_tail;
 
@@ -121,7 +144,7 @@ void SeatingArranger::UpdateMap(const std::string &str_characterName, const std:
 
         do {
             if (pt_curr->str_neighbour == str_neighbourName) {
-                pt_curr->i32_happiness = i32_happiness;
+                pt_curr->i32_happiness += i32_happiness;
                 return;
             }
             pt_tail = pt_curr;
