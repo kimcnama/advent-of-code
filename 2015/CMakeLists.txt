@@ -128,7 +128,15 @@ add_library(2015Day12 STATIC ${Headers2015Day12} ${Sources2015Day12})
 
 ############################ Day13  ######################################
 set(Headers2015Day13
-        2015/inc/day13/seating_arranger.h)
+        2015/inc/day13/seating_arranger.h ../datastructs/inc/adjacency_table_ll.hpp)
 set(Sources2015Day13
         2015/src/day13/seating_arranger.cpp)
 add_library(2015Day13 STATIC ${Headers2015Day13} ${Sources2015Day13})
+
+############################ Day14  ######################################
+set(Headers2015Day14
+        2015/inc/day14/race_simulator.hpp)
+set(Sources2015Day14
+        2015/src/day14/race_simulator.cpp)
+add_library(2015Day14 STATIC ${Headers2015Day14} ${Sources2015Day14})
+

@@ -187,4 +187,16 @@ add_test(NAME ${Day13}
         COMMAND ${Day13}
         )
 
+############################ Day14  ######################################
+set(Day14 2015Day14Test)
+set(SourcesDay14
+        day14/race_simulator_tests.cpp)
+
+add_executable(${Day14} ${SourcesDay14})
+target_link_libraries(${Day14} PUBLIC gtest_main 2015Day14)
+
+add_test(NAME ${Day14}
+        COMMAND ${Day14}
+        )
+
 
